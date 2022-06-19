@@ -1,7 +1,12 @@
+const User = require("../model/user.model");
+
 class UserService {
   async createUser(user_name, password) {
-    console.log(user_name, password);
-    return { user_name, password ,address:"henann"};
+     // 插入数据
+    // await表达式: promise对象的值
+    const res = await User.create({ user_name, password })
+    // console.log(res)
+    return res.dataValues
   }
 }
 
