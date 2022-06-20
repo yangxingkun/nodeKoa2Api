@@ -18,6 +18,7 @@ seq
     console.log("数据库连接成功");
   })
   .catch((err) => {
-    console.log("数据库连接失败",err);
+    console.log("数据库连接失败", err);
   });
-module.exports=seq
+// seq.sync({ force: true });
+module.exports = seq;
