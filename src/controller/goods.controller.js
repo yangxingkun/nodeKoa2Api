@@ -49,5 +49,22 @@ class GoodsController {
       return ctx.app.emit('error', publishGoodsError, ctx)
     }
   }
+  async update(ctx) {
+    try {
+      const res = await updateGoods(ctx.params.id, ctx.request.body)
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: '修改商品成功',
+          result: '',
+        }
+      } else {
+        return ctx.app.emit('error', invalidGoodsID, ctx)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
 }
 module.exports = new GoodsController();
