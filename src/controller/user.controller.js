@@ -44,9 +44,9 @@ class User {
   async modefiyPassword(ctx, next) {
     // 1. 获取数据
     const id = ctx.state.user.id;
-    console.log(id, "[][]");
+    // console.log(id, "[][]");
     const password = ctx.request.body.password;
-    console.log(password, "[][]");
+    // console.log(password, "[][]");
     // 2. 操作数据库
     if (await updateById({ id, password })) {
       ctx.body = {
@@ -63,7 +63,7 @@ class User {
     }
   }
   async update(ctx, next) {
-    console.log(ctx.request, "拿到请求数据");
+    // console.log(ctx.request, "拿到请求数据");
     ctx.body = ctx.request.body;
   }
 }

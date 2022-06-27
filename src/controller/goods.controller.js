@@ -11,7 +11,7 @@ const {
   removeGoods,
   restoreGoods,
   findGoods,
-} = require('../service/goods.service')
+} = require("../service/goods.service");
 class GoodsController {
   async upload(ctx, next) {
     const { file } = ctx.request.files;
@@ -38,33 +38,73 @@ class GoodsController {
     try {
       const { createdAt, updatedAt, ...res } = await createGoods(
         ctx.request.body
-      )
+      );
       ctx.body = {
         code: 0,
-        message: '发布商品成功',
+        message: "发布商品成功",
         result: res,
-      }
+      };
     } catch (err) {
-      console.error(err)
-      return ctx.app.emit('error', publishGoodsError, ctx)
+      console.error(err);
+      return ctx.app.emit("error", publishGoodsError, ctx);
     }
   }
   async update(ctx) {
     try {
-      const res = await updateGoods(ctx.params.id, ctx.request.body)
+      const res = await updateGoods(ctx.params.id, ctx.request.body);
       if (res) {
         ctx.body = {
           code: 0,
-          message: '修改商品成功',
-          result: '',
-        }
+          message: "修改商品成功",
+          result: "",
+        };
       } else {
-        return ctx.app.emit('error', invalidGoodsID, ctx)
+        return ctx.app.emit("error", invalidGoodsID, ctx);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   }
+/* 下架商品 */
+async remove(ctx) {
+  const res = await removeGoods(ctx.params.id)
 
+  if (res) {
+    ctx.body = {
+      code: 0,
+      message: '下架商品成功',
+      result: '',
+    }
+  } else {
+    return ctx.app.emit('error', invalidGoodsID, ctx)
+  }
+}
+/* 上架商品 */
+async restore(ctx) {
+  const res = await restoreGoods(ctx.params.id)
+  if (res) {
+    ctx.body = {
+      code: 0,
+      message: '上架商品成功',
+      result: '',
+    }
+  } else {
+    return ctx.app.emit('error', invalidGoodsID, ctx)
+  }
+}
+
+/* 商品列表信息 */
+async findAll(ctx) {
+  // 1. 解析pageNum和pageSize
+  const { pageNum = 1, pageSize = 10 } = ctx.request.query
+  // 2. 调用数据处理的相关方法
+  const res = await findGoods(pageNum, pageSize)
+  // 3. 返回结果
+  ctx.body = {
+    code: 0,
+    message: '获取商品列表成功',
+    result: res,
+  }
+}
 }
 module.exports = new GoodsController();
